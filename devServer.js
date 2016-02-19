@@ -1,27 +1,44 @@
-var path = require('path');
-var express = require('express');
-var webpack = require('webpack');
-var config = require('./webpack.config.dev');
+require('babel-register')
 
-var app = express();
-var compiler = webpack(config);
+const path = require('path')
+const express = require('express')
+const webpack = require('webpack')
+const config = require('./webpack.config')
+
+const app = express()
+const compiler = webpack(config)
 
 app.use(require('webpack-dev-middleware')(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath
-}));
+  publicPath: config.output.publicPath,
+  stats: {
+    hash: false,
+    colors: true,
+    timings: true,
+    chunks: true,
+    assets: false,
+    version: false,
+    children: false,
+    chunkModules: false,
+  },
+}))
 
-app.use(require('webpack-hot-middleware')(compiler));
+app.use(require('webpack-hot-middleware')(compiler))
 
-app.get('*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'))
+})
 
-app.listen(3000, 'localhost', function(err) {
+app.get('/app/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'))
+  // next()
+})
+
+app.listen(3000, 'localhost', (err) => {
   if (err) {
-    console.log(err);
-    return;
+    console.log(err)
+    return
   }
 
-  console.log('Listening at http://localhost:3000');
-});
+  console.log('🔥 Listening at http://localhost:3000')
+})

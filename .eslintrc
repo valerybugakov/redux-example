@@ -5,12 +5,18 @@
   },
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
+    "es6": true,
+    "mocha": true
   },
   "parser": "babel-eslint",
+  "extends": "airbnb",
   "rules": {
     "quotes": [2, "single"],
     "strict": [2, "never"],
+    "semi": [1, "never"],
+    "arrow-body-style": 0,
+    "comma-dangle": 0,
     "babel/generator-star-spacing": 1,
     "babel/new-cap": 1,
     "babel/object-shorthand": 1,
