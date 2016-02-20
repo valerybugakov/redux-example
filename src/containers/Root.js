@@ -3,6 +3,7 @@ import { Provider } from 'react-redux'
 import routes from '../routes'
 // import DevTools from './DevTools'
 import { Router, browserHistory } from 'react-router'
+import 'styles/main.css'
 
 class Root extends Component {
   static propTypes = {

@@ -1,23 +1,39 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import autobind from 'autobind-decorator'
 import { addToList, removeFromList } from 'actions/list'
 
 class List extends Component {
   static propTypes = {
-    renderItem: PropTypes.func.isRequired,
+    ItemComponent: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired,
     add: PropTypes.func,
     remove: PropTypes.func
   }
 
+  @autobind
+  renderItem(item, index) {
+    const { ItemComponent } = this.props
+
+    return (
+      <div key={index}>
+        <ItemComponent
+          index={index}
+          value={item.value}
+          removeItem={this.props.remove}
+        />
+      </div>
+    )
+  }
+
   render() {
-    const { items, renderItem, add, remove } = this.props
+    const { items, add, remove } = this.props
 
     return (
       <div>
         <button onClick={add}>Add</button>
         <button onClick={remove}>Delete</button>
-        {items.map(renderItem)}
+        {items.map(this.renderItem)}
       </div>
     )
   }

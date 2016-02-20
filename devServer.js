@@ -3,14 +3,22 @@ require('babel-register')
 const path = require('path')
 const express = require('express')
 const webpack = require('webpack')
-const config = require('./webpack.config')
+const webpackDevMiddleware = require('webpack-dev-middleware')
+const webpackHotMiddleware = require('webpack-hot-middleware')
+const history = require('connect-history-api-fallback')
+const config = require('./webpack.config.babel')
 
 const app = express()
 const compiler = webpack(config)
 
-app.use(require('webpack-dev-middleware')(compiler, {
+app.use(express.static(path.join(__dirname, '/static')))
+app.use(history())
+
+app.use(webpackDevMiddleware(compiler, {
+  hot: true,
   noInfo: true,
   publicPath: config.output.publicPath,
+  historyApiFallback: true,
   stats: {
     hash: false,
     colors: true,
@@ -23,16 +31,7 @@ app.use(require('webpack-dev-middleware')(compiler, {
   },
 }))
 
-app.use(require('webpack-hot-middleware')(compiler))
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
-})
-
-app.get('/app/*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'))
-  // next()
-})
+app.use(webpackHotMiddleware(compiler))
 
 app.listen(3000, 'localhost', (err) => {
   if (err) {

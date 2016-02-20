@@ -1,29 +1,21 @@
-import React, { Component, PropTypes } from 'react'
+import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { Link, browserHistory } from 'react-router'
+import { Link } from 'react-router'
 
-@connect()
-class App extends Component {
-  static propTypes = {
-    children: PropTypes.node
-  }
+const App = ({ children }) => (
+  <div>
+    <img src="./octocat.jpg" width="50" alt="octocat" />
+    App component OMG
+    <ul>
+      <li><Link to="/">Home Page</Link></li>
+      <li><Link to="/counter">Counter Page</Link></li>
+    </ul>
+    {children}
+  </div>
+)
 
-  handleChange(nextValue) {
-    browserHistory.push(`/${nextValue}`)
-  }
-
-  render() {
-    return (
-      <div>
-        App component OMG
-        <ul>
-          <li><Link to="/">Home Page</Link></li>
-          <li><Link to="/counter">Counter Page</Link></li>
-        </ul>
-        {this.props.children}
-      </div>
-    )
-  }
+App.propTypes = {
+  children: PropTypes.node
 }
 
-export default App
+export default connect()(App)
