@@ -11,16 +11,15 @@ const list = (reducer) => {
           reducer(undefined, action)
         ]
       case REMOVE_FROM_LIST:
-        if (typeof index !== 'undefined') {
+        if (typeof index === 'number') {
           return [
             ...state.slice(0, index),
             ...state.slice(index + 1)
           ]
-        } else {
-          return state.slice(0, state.length - 1)
         }
+        return state.slice(0, state.length - 1)
       default:
-        if (typeof index !== 'undefined') {
+        if (typeof index === 'number') {
           return [
             ...state.slice(0, index),
             reducer(state[index], action),

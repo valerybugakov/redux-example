@@ -6,20 +6,24 @@ class List extends Component {
   static propTypes = {
     renderItem: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired,
-    dispatch: PropTypes.func
+    add: PropTypes.func,
+    remove: PropTypes.func
   }
 
   render() {
-    const { items, renderItem, dispatch } = this.props
+    const { items, renderItem, add, remove } = this.props
 
     return (
       <div>
-        <button onClick={() => dispatch(addToList())}>Add</button>
-        <button onClick={() => dispatch(removeFromList())}>Delete</button>
+        <button onClick={add}>Add</button>
+        <button onClick={remove}>Delete</button>
         {items.map(renderItem)}
       </div>
     )
   }
 }
 
-export default connect()(List)
+export default connect(null, {
+  add: addToList,
+  remove: removeFromList
+})(List)
