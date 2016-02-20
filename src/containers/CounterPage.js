@@ -14,12 +14,17 @@ class CounterPage extends Component {
     removeFromList: PropTypes.func.isRequired
   }
 
+  calculateSum() {
+    console.log(this.props.items)
+    return this.props.items.reduce((sum, counter) => sum + counter.value, 0)
+  }
+
   @autobind
-  renderCounter(value, index) {
+  renderCounter(counter, index) {
     return (
       <div key={index}>
         <Counter
-          value={value}
+          value={counter.value}
           index={index}
           onIncrement={() => this.props.onIncrement(index)}
           onDecrement={() => this.props.onDecrement(index)}
@@ -33,6 +38,8 @@ class CounterPage extends Component {
     return (
       <div>
         <hr />
+        <h4>Counters:</h4>
+        <p>Sum: {this.calculateSum()}</p>
         <List
           items={this.props.items}
           renderItem={this.renderCounter}

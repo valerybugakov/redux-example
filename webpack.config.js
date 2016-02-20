@@ -3,7 +3,7 @@ import webpack from 'webpack'
 import autoprefixer from 'autoprefixer'
 import postcssNext from 'postcss-cssnext'
 import postcssImport from 'postcss-import'
-import HtmlPlugin from 'html-webpack-plugin'
+// import HtmlPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
 const dev = process.env.NODE_ENV !== 'production'

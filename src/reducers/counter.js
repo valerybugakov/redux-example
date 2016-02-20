@@ -1,11 +1,11 @@
 import { INCREMENT_COUNTER, DECREMENT_COUNTER } from '../actions/counter'
 
-const counter = (state = 0, action) => {
+const counter = (state = { value: 0 }, action) => {
   switch (action.type) {
     case INCREMENT_COUNTER:
-      return state + 1
+      return { value: state.value + 1 }
     case DECREMENT_COUNTER:
-      return state - 1
+      return { value: state.value - 1 }
     default:
       return state
   }
