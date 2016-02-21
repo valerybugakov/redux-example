@@ -11,6 +11,10 @@ class List extends Component {
     remove: PropTypes.func
   }
 
+  onCounterDeleteClick(index) {
+    return () => this.props.remove(index)
+  }
+
   @autobind
   renderItem(item, index) {
     const { ItemComponent } = this.props
@@ -20,8 +24,8 @@ class List extends Component {
         <ItemComponent
           index={index}
           value={item.value}
-          removeItem={this.props.remove}
         />
+        <button onClick={this.onCounterDeleteClick(index)}>Delete</button>
       </div>
     )
   }
