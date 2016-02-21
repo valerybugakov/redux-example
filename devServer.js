@@ -10,6 +10,7 @@ const config = require('./webpack.config.babel')
 
 const app = express()
 const compiler = webpack(config)
+const port = process.env.PORT || 3000
 
 app.use(express.static(path.join(__dirname, '/static')))
 app.use(history())
@@ -39,5 +40,5 @@ app.listen(3000, 'localhost', (err) => {
     return
   }
 
-  console.log('🔥 Listening at http://localhost:3000')
+  console.log(`🔥 Listening at http://localhost:${port}`)
 })
