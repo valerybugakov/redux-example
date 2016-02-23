@@ -15,6 +15,9 @@
     "quotes": [2, "single"],
     "strict": [2, "never"],
     "semi": [1, "never"],
+    "new-cap": [2, {
+      "capIsNewExceptions": ["Server"]
+    }],
     "arrow-body-style": 0,
     "comma-dangle": 0,
     "babel/generator-star-spacing": 1,

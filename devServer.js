@@ -2,6 +2,7 @@ require('babel-register')
 
 const path = require('path')
 const express = require('express')
+const http = require('http')
 const webpack = require('webpack')
 const webpackDevMiddleware = require('webpack-dev-middleware')
 const webpackHotMiddleware = require('webpack-hot-middleware')
@@ -9,6 +10,8 @@ const history = require('connect-history-api-fallback')
 const config = require('./webpack.config.babel')
 
 const app = express()
+const server = http.Server(app)
+const io = require('socket.io')(server)
 const compiler = webpack(config)
 const port = process.env.PORT || 3000
 
@@ -34,7 +37,18 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler))
 
-app.listen(3000, 'localhost', (err) => {
+var counters = [{ value: 1 }, { value: 2 }, { value: 3 }]
+
+io.on('connection', (socket) => {
+  console.log('user connected')
+  socket.emit('initState', counters)
+
+  socket.on('message', (msg) => {
+    console.log(`message: ${msg}`)
+  })
+})
+
+server.listen(3000, 'localhost', (err) => {
   if (err) {
     console.log(err)
     return
