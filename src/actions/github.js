@@ -7,9 +7,9 @@ export const USER_FAILURE = 'USER_FAILURE'
 function fetchUser(username) {
   return {
     [CALL_API_SYMBOL]: {
-      types: [ USER_REQUEST, USER_SUCCESS, USER_FAILURE ],
+      types: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
       endpoint: `users/${username}`,
-      schema: Schemas.User
+      schema: Schemas.USER
     }
   }
 }
@@ -22,5 +22,11 @@ export function loadUser(username) {
     }
 
     return dispatch(fetchUser(username))
+  }
+}
+
+export function loadRepos(username) {
+  return (dispatch, getState) => {
+    const user = getState().entities.repos[username]
   }
 }

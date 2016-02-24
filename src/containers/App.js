@@ -9,7 +9,7 @@ const handleHomeClick = () => {
 
 const App = ({ children }) => (
   <div>
-    <img src="./octocat.jpg" width="50" alt="octocat" />
+    <img src="/octocat.jpg" width="50" alt="octocat" />
     App component OMG
     <ul>
       <li>
@@ -19,12 +19,13 @@ const App = ({ children }) => (
         <Link activeClassName="active" to="/counter">Counter Page</Link>
       </li>
       <li>
-        <Link activeClassName="active" to="/repos">Repo Page</Link>
+        <Link activeClassName="active" to="/github">Repo Page</Link>
       </li>
     </ul>
     <button onClick={handleHomeClick}>
       Go home with react-router browserHistory
     </button>
+    <hr />
     {children}
   </div>
 )

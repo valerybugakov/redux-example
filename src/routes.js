@@ -11,8 +11,8 @@ export default (
   <Route path="/" component={App}>
     <Route path="/counter" component={CounterPage} />
     <Route path="/github" component={GithubPage} />
-      <Route path="github/:user" component={GitUserPage} />
-      <Route path="github/:user/:repo" component={RepoPage} />
+      <Route path="github/:username" component={GitUserPage} />
+      <Route path="github/:username/:repo" component={RepoPage} />
     <Route path="*" component={Notfound} />
   </Route>
 )

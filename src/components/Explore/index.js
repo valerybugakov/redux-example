@@ -25,6 +25,8 @@ class Explore extends Component {
   render() {
     return (
       <div>
+      Input Github username you wanna explore:
+      <br />
       <input
         type="text"
         size="45"

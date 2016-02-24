@@ -37,9 +37,8 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler))
 
-var counters = [{ value: 1 }, { value: 2 }, { value: 3 }]
-
 io.on('connection', (socket) => {
+  var counters = [{ value: 1 }, { value: 2 }, { value: 3 }]
   console.log('user connected')
   socket.emit('initState', counters)
 
@@ -48,7 +47,7 @@ io.on('connection', (socket) => {
   })
 })
 
-server.listen(3000, 'localhost', (err) => {
+server.listen(port, 'localhost', (err) => {
   if (err) {
     console.log(err)
     return

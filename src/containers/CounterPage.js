@@ -6,7 +6,6 @@ import Counter from 'components/Counter'
 
 const CounterPage = ({ items, sum }) => (
   <div>
-    <hr />
     <h4>Counters:</h4>
     <p>Sum: {sum}</p>
     <List
