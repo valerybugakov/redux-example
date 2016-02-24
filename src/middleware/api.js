@@ -13,6 +13,21 @@ export const Schemas = {
   REPO_ARRAY: arrayOf(repoSchema)
 }
 
+const getNextPageUrl = (response) => {
+  const link = response.headers.get('link')
+  if (!link) {
+    return null
+  }
+
+  const nextLink = link.split(',').find(s => s.indexOf('rel="next"') > -1)
+  if (!nextLink) {
+    return null
+  }
+
+  return nextLink.split(';')[0].slice(1, -1)
+}
+
+
 export const CALL_API_SYMBOL = Symbol('Call API')
 
 const callAPI = (endpoint, schema) => {
@@ -27,31 +42,40 @@ const callAPI = (endpoint, schema) => {
         return Promise.reject(json)
       }
 
+      const nextPageUrl = getNextPageUrl(response)
+
       return Object.assign({},
-        normalize(camelizeKeys(json), schema)
+        normalize(camelizeKeys(json), schema),
+        { nextPageUrl }
       )
     })
 }
 
-export default (store) => (next) => (action) => {
+export default store => next => action => {
   const apiAction = action[CALL_API_SYMBOL]
   if (typeof apiAction === 'undefined') {
     return next(action)
   }
 
-  let { endpoint } = apiAction
-  const { schema, types } = apiAction
+  const { endpoint, schema, types } = apiAction
   const [requestType, successType, failureType] = types
-  next({ type: requestType })
+
+  const actionWith = (data) => {
+    const finalAction = Object.assign({}, action, data)
+    delete finalAction[CALL_API_SYMBOL]
+    return finalAction
+  }
+
+  next(actionWith({ type: requestType }))
 
   return callAPI(endpoint, schema).then(
-    (response) => next({
+    response => next(actionWith({
       type: successType,
       response
-    }),
-    (error) => next({
+    })),
+    error => next(actionWith({
       type: failureType,
       error: error.message || 'Oops!'
-    })
+    }))
   )
 }

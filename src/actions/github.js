@@ -25,8 +25,33 @@ export function loadUser(username) {
   }
 }
 
-export function loadRepos(username) {
+export const USER_REPOS_REQUEST = 'USER_REPOS_REQUEST'
+export const USER_REPOS_SUCCESS = 'USER_REPOS_SUCCESS'
+export const USER_REPOS_FAILURE = 'USER_REPOS_FAILURE'
+
+function fetchRepos(username, nextPageUrl) {
+  return {
+    username,
+    [CALL_API_SYMBOL]: {
+      types: [USER_REPOS_REQUEST, USER_REPOS_SUCCESS, USER_REPOS_FAILURE],
+      endpoint: nextPageUrl,
+      schema: Schemas.REPO_ARRAY
+
+    }
+  }
+}
+
+export function loadRepos(username, nextPage) {
   return (dispatch, getState) => {
-    const user = getState().entities.repos[username]
+    const {
+      nextPageUrl = `users/${username}/repos`,
+      pageCount = 0
+    } = getState().pagination.reposByUser[username] || {}
+
+    if (pageCount > 0 && !nextPage) {
+      return null
+    }
+
+    return dispatch(fetchRepos(username, nextPageUrl))
   }
 }

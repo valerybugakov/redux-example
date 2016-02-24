@@ -1,11 +1,13 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { loadUser } from 'actions/github'
+import { loadUser, loadRepos } from 'actions/github'
 
 class GitUserPage extends Component {
   static propTypes = {
     loadUser: PropTypes.func,
+    loadRepos: PropTypes.func,
     username: PropTypes.string,
+    userRepos: PropTypes.array,
     user: PropTypes.object
   }
 
@@ -22,10 +24,21 @@ class GitUserPage extends Component {
   loadData(props) {
     const { username } = props
     this.props.loadUser(username)
+    this.props.loadRepos(username)
+  }
+
+  renderRepos(repos) {
+    return (
+      <ul>
+        {repos.map(function(repo) {
+          return <li key={repo.id}>{repo.fullName}</li>
+        })}
+      </ul>
+    )
   }
 
   render() {
-    const { username, user } = this.props
+    const { username, user, userRepos } = this.props
     if (!user) {
       return <h2><i>Loading {username}’s profile...</i></h2>
     }
@@ -44,9 +57,7 @@ class GitUserPage extends Component {
         <br />
         <div>
           List of repos:
-          <ul>
-            <li>Some repo</li>
-          </ul>
+          {this.renderRepos(userRepos)}
         </div>
       </div>
     )
@@ -56,16 +67,21 @@ class GitUserPage extends Component {
 const mapStateToProps = (state, ownProps) => {
   const { username } = ownProps.params
   const {
-    entities: { users, repos }
+    entities: { users, repos },
+    pagination: { reposByUser }
   } = state
 
+  const reposPagination = reposByUser[username] || { ids: [] }
+  const userRepos = reposPagination.ids.map(id => repos[id])
+
   return {
-    repos,
     username,
-    user: users[username]
+    userRepos,
+    user: users[username],
   }
 }
 
 export default connect(mapStateToProps, {
-  loadUser
+  loadUser,
+  loadRepos
 })(GitUserPage)
