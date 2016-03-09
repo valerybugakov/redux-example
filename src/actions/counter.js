@@ -3,10 +3,10 @@ export const DECREMENT_COUNTER = 'DECREMENT_COUNTER'
 
 export const onIncrement = (index) => ({
   type: INCREMENT_COUNTER,
-  index
+  index,
 })
 
 export const onDecrement = (index) => ({
   type: DECREMENT_COUNTER,
-  index
+  index,
 })

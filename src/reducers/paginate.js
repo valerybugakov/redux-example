@@ -7,23 +7,23 @@ export default function paginate({ types, getIdAttribute }) {
     isFetching: false,
     nextPageUrl: undefined,
     pageCount: 0,
-    ids: []
+    ids: [],
   }, action) => {
     switch (action.type) {
       case requestType:
         return Object.assign({}, state, {
-          isFetching: true
+          isFetching: true,
         })
       case successType:
         return Object.assign({}, state, {
           isFetching: false,
           ids: union(state.ids, action.response.result),
           nextPageUrl: action.response.nextPageUrl,
-          pageCount: state.pageCount + 1
+          pageCount: state.pageCount + 1,
         })
       case failureType:
         return Object.assign({}, state, {
-          isFetching: false
+          isFetching: false,
         })
       default:
         return state
@@ -37,7 +37,7 @@ export default function paginate({ types, getIdAttribute }) {
       case failureType: {
         const key = getIdAttribute(action)
         return Object.assign({}, state, {
-          [key]: updatePagination(state[key], action)
+          [key]: updatePagination(state[key], action),
         })
       }
       default:

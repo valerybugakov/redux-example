@@ -12,7 +12,7 @@ export default (
     <Route path="/counter" component={CounterPage} />
     <Route path="/github" component={GithubPage} />
       <Route path="github/:username" component={GitUserPage} />
-      <Route path="github/:username/:repo" component={RepoPage} />
+      <Route path="github/:username/:reponame" component={RepoPage} />
     <Route path="*" component={Notfound} />
   </Route>
 )

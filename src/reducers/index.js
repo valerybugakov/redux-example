@@ -6,7 +6,7 @@ import { entities, pagination } from './github'
 const rootReducer = combineReducers({
   counterList: list(counter),
   pagination,
-  entities
+  entities,
 })
 
 export default rootReducer

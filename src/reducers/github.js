@@ -16,7 +16,7 @@ export const pagination = combineReducers({
     types: [
       ActionTypes.USER_REPOS_REQUEST,
       ActionTypes.USER_REPOS_SUCCESS,
-      ActionTypes.USER_REPOS_FAILURE
-    ]
-  })
+      ActionTypes.USER_REPOS_FAILURE,
+    ],
+  }),
 })

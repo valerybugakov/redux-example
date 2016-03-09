@@ -2,15 +2,15 @@ import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import 'isomorphic-fetch'
 
-const userSchema = new Schema('users', { idAttribute: 'login' })
-const repoSchema = new Schema('repos', { idAttribute: 'fullName' })
+const userSchema = new Schema('users', { idAttribute: (entity) => entity.login.toLowerCase() })
+const repoSchema = new Schema('repos', { idAttribute: (entity) => entity.fullName.toLowerCase() })
 repoSchema.define({ owner: userSchema })
 
 export const Schemas = {
   USER: userSchema,
   USER_ARRAY: arrayOf(userSchema),
   REPO: repoSchema,
-  REPO_ARRAY: arrayOf(repoSchema)
+  REPO_ARRAY: arrayOf(repoSchema),
 }
 
 const getNextPageUrl = (response) => {
@@ -71,11 +71,11 @@ export default store => next => action => {
   return callAPI(endpoint, schema).then(
     response => next(actionWith({
       type: successType,
-      response
+      response,
     })),
     error => next(actionWith({
       type: failureType,
-      error: error.message || 'Oops!'
+      error: error.message || 'Oops!',
     }))
   )
 }

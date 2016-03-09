@@ -26,7 +26,7 @@ let plugins = [
   new webpack.HotModuleReplacementPlugin(),
   new webpack.NoErrorsPlugin(),
   new webpack.DefinePlugin({ __DEBUG__: dev }),
-  new HtmlPlugin({ template: './index.html' }),
+  new HtmlPlugin({ inject: false, template: './index.html' }),
   new ExtractTextPlugin('style.[chunkhash].css', {
     disable: dev,
     allChunks: true

@@ -8,7 +8,6 @@ const socket = io()
 socket.emit('message', 'hello world')
 
 socket.on('initState', (state) => {
-
   console.log(`initState event: ${ JSON.stringify(state)}`)
   const store = configureStore({ counterList: state })
 
@@ -16,7 +15,6 @@ socket.on('initState', (state) => {
     <Root store={store} />,
     document.getElementById('root')
   )
-
 })
 
 // const store = configureStore({ counterList: [{ value: 1 }] })

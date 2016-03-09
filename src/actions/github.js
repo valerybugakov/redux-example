@@ -9,15 +9,15 @@ function fetchUser(username) {
     [CALL_API_SYMBOL]: {
       types: [USER_REQUEST, USER_SUCCESS, USER_FAILURE],
       endpoint: `users/${username}`,
-      schema: Schemas.USER
-    }
+      schema: Schemas.USER,
+    },
   }
 }
 
-export function loadUser(username) {
+export function loadUser(username, requiredFields = []) {
   return (dispatch, getState) => {
     const user = getState().entities.users[username]
-    if (user) {
+    if (user && requiredFields.every(key => user.hasOwnProperty(key))) {
       return null
     }
 
@@ -35,9 +35,8 @@ function fetchRepos(username, nextPageUrl) {
     [CALL_API_SYMBOL]: {
       types: [USER_REPOS_REQUEST, USER_REPOS_SUCCESS, USER_REPOS_FAILURE],
       endpoint: nextPageUrl,
-      schema: Schemas.REPO_ARRAY
-
-    }
+      schema: Schemas.REPO_ARRAY,
+    },
   }
 }
 
@@ -45,7 +44,7 @@ export function loadRepos(username, nextPage) {
   return (dispatch, getState) => {
     const {
       nextPageUrl = `users/${username}/repos`,
-      pageCount = 0
+      pageCount = 0,
     } = getState().pagination.reposByUser[username] || {}
 
     if (pageCount > 0 && !nextPage) {
@@ -53,5 +52,30 @@ export function loadRepos(username, nextPage) {
     }
 
     return dispatch(fetchRepos(username, nextPageUrl))
+  }
+}
+
+export const REPO_REQUEST = 'REPO_REQUEST'
+export const REPO_SUCCESS = 'REPO_SUCCESS'
+export const REPO_FAILURE = 'REPO_FAILURE'
+
+function fetchRepo(fullName) {
+  return {
+    fullName,
+    [CALL_API_SYMBOL]: {
+      types: [REPO_REQUEST, REPO_SUCCESS, REPO_FAILURE],
+      endpoint: `repos/${fullName}`,
+      schema: Schemas.REPO,
+    },
+  }
+}
+
+export function loadRepo(fullName, requiredFields = []) {
+  return (dispatch, getState) => {
+    const repo = getState().entities.repos[fullName]
+    if (repo && requiredFields.every(key => repo.hasOwnProperty(key))) {
+      return null
+    }
+    dispatch(fetchRepo(fullName))
   }
 }
