@@ -1,3 +1,4 @@
+/* eslint-disable vars-on-top, no-var */
 require('babel-register')
 
 const path = require('path')
@@ -37,13 +38,23 @@ app.use(webpackDevMiddleware(compiler, {
 
 app.use(webpackHotMiddleware(compiler))
 
-io.on('connection', (socket) => {
-  var counters = [{ value: 1 }, { value: 2 }, { value: 3 }]
-  console.log('user connected')
-  socket.emit('initState', counters)
+var connections = []
+var userId = 0
+
+io.on('connection', socket => {
+  // var counters = [{ value: 1 }, { value: 2 }, { value: 3 }]
+  connections.push(socket)
+  userId += 1
+
+  socket.emit('start', { userId })
 
   socket.on('message', (msg) => {
     console.log(`message: ${msg}`)
+  })
+
+  socket.on('disconnect', () => {
+    var index = connections.indexOf(socket)
+    connections.splice(index, 1)
   })
 })
 

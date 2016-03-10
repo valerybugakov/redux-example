@@ -8,7 +8,7 @@ class List extends Component {
     ItemComponent: PropTypes.func.isRequired,
     items: PropTypes.array.isRequired,
     add: PropTypes.func,
-    remove: PropTypes.func
+    remove: PropTypes.func,
   }
 
   onCounterDeleteClick(index) {
@@ -45,5 +45,5 @@ class List extends Component {
 
 export default connect(null, {
   add: addToList,
-  remove: removeFromList
+  remove: removeFromList,
 })(List)

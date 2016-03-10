@@ -13,13 +13,13 @@ const productionPlugins = [
   new webpack.optimize.DedupePlugin(),
   new webpack.optimize.OccurenceOrderPlugin(),
   new webpack.DefinePlugin({
-    'process.env': { NODE_ENV: JSON.stringify('production') }
+    'process.env': { NODE_ENV: JSON.stringify('production') },
   }),
   new webpack.optimize.UglifyJsPlugin({
     compressor: {
-      warnings: false
-    }
-  })
+      warnings: false,
+    },
+  }),
 ]
 
 let plugins = [
@@ -29,8 +29,8 @@ let plugins = [
   new HtmlPlugin({ inject: false, template: './index.html' }),
   new ExtractTextPlugin('style.[chunkhash].css', {
     disable: dev,
-    allChunks: true
-  })
+    allChunks: true,
+  }),
 ]
 
 if (!dev) plugins = plugins.concat(productionPlugins)
@@ -42,16 +42,16 @@ module.exports = {
     app: [
       'eventsource-polyfill', // necessary for hot reloading with IE
       'webpack-hot-middleware/client?path=/__webpack_hmr',
-      './src/index'
+      './src/index',
     ],
   } : {
-    app: './src/index.js'
+    app: './src/index.js',
   },
 
   output: {
     publicPath: '/',
     path: path.join(__dirname, 'dist'),
-    filename: 'js/[name].[hash].js'
+    filename: 'js/[name].[hash].js',
   },
 
   postcss: [
@@ -59,13 +59,13 @@ module.exports = {
       addDependencyTo: webpack,
       path: [
         path.resolve(__dirname, 'src'),
-        path.resolve(__dirname, 'src/styles')
-      ]
+        path.resolve(__dirname, 'src/styles'),
+      ],
     }),
     postcssNext(),
     autoprefixer({
-      browsers: ['last 2 versions']
-    })
+      browsers: ['last 2 versions'],
+    }),
   ],
 
   module: {
@@ -73,23 +73,23 @@ module.exports = {
       {
         test: /\.(jsx|js)?$/,
         exclude: /(node_modules|static|styles)/,
-        loader: 'babel'
+        loader: 'babel',
       },
       {
         test: /\.css$/,
         loader: ExtractTextPlugin.extract(
           'style',
           `css?modules&importLoaders=1${cssModuleName}!postcss`
-        )
+        ),
       },
       {
         test: /\.(svg|png|jpg|gif)$/,
         include: [
           path.resolve(__dirname, 'static'),
         ],
-        loader: 'url-loader?limit=300000&name=[name].[ext]'
-      }
-    ]
+        loader: 'url-loader?limit=300000&name=[name].[ext]',
+      },
+    ],
   },
 
   resolve: {
@@ -97,10 +97,10 @@ module.exports = {
     extensions: ['', '.js', '.html', '.css'],
     modulesDirectories: [
       'src',
-      'node_modules'
-    ]
+      'node_modules',
+    ],
   },
 
-  plugins
+  plugins,
 
 }

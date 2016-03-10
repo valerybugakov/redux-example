@@ -17,12 +17,12 @@ const CounterPage = ({ items, sum }) => (
 
 CounterPage.propTypes = {
   items: PropTypes.array.isRequired,
-  sum: PropTypes.number.isRequired
+  sum: PropTypes.number.isRequired,
 }
 
 const mapStateToProps = (state) => ({
   items: state.counterList,
-  sum: counterSumSelector(state)
+  sum: counterSumSelector(state),
 })
 
 export default connect(mapStateToProps)(CounterPage)

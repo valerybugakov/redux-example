@@ -2,6 +2,8 @@ import { Schema, arrayOf, normalize } from 'normalizr'
 import { camelizeKeys } from 'humps'
 import 'isomorphic-fetch'
 
+export const CALL_API_SYMBOL = Symbol('Call API')
+
 const userSchema = new Schema('users', { idAttribute: (entity) => entity.login.toLowerCase() })
 const repoSchema = new Schema('repos', { idAttribute: (entity) => entity.fullName.toLowerCase() })
 repoSchema.define({ owner: userSchema })
@@ -27,13 +29,11 @@ const getNextPageUrl = (response) => {
   return nextLink.split(';')[0].slice(1, -1)
 }
 
-
-export const CALL_API_SYMBOL = Symbol('Call API')
-
 const callAPI = (endpoint, schema) => {
   const API_ROOT = 'https://api.github.com/'
+  const fullUrl = (endpoint.indexOf(API_ROOT) === -1) ? API_ROOT + endpoint : endpoint
 
-  return fetch(API_ROOT + endpoint)
+  return fetch(fullUrl)
     .then(response =>
       response.json().then(json => ({ json, response }))
     )
@@ -51,7 +51,7 @@ const callAPI = (endpoint, schema) => {
     })
 }
 
-export default store => next => action => {
+export default store => next => action => { // eslint-disable-line no-unused-vars
   const apiAction = action[CALL_API_SYMBOL]
   if (typeof apiAction === 'undefined') {
     return next(action)

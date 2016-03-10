@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
-import { loadRepo } from 'actions/github'
+import autobind from 'autobind-decorator'
+import { loadRepo, loadContributors } from 'actions/github'
 
 class RepoPage extends Component {
   static propTypes = {
@@ -10,6 +11,7 @@ class RepoPage extends Component {
     owner: PropTypes.object,
     loadRepo: PropTypes.func,
     loadContributors: PropTypes.func,
+    contributors: PropTypes.array,
   }
 
   componentWillMount() {
@@ -19,7 +21,28 @@ class RepoPage extends Component {
   loadData() {
     const { fullName } = this.props
     this.props.loadRepo(fullName, ['description'])
-    // this.props.loadContributors(fullName)
+    this.props.loadContributors(fullName)
+  }
+
+  @autobind
+  handleLoadMore() {
+    const { fullName } = this.props
+    this.props.loadContributors(fullName, true)
+  }
+
+  renderContributors() {
+    const { contributors } = this.props
+    return (
+      <ul>
+        {contributors.map(contributor => (
+          <li key={contributor.id}>
+             <Link to={`/github/${contributor.login}`}>
+               {contributor.login}
+             </Link>
+          </li>
+         ))}
+      </ul>
+    )
   }
 
   render() {
@@ -39,6 +62,15 @@ class RepoPage extends Component {
         <br />
         <small>Language: {repo.language}</small>
         <p>{repo.description}</p>
+        <div>
+          List of contributors:
+          {this.renderContributors()}
+          {
+            <button onClick={this.handleLoadMore}>
+              Load more
+            </button>
+          }
+        </div>
       </div>
     )
   }
@@ -46,11 +78,18 @@ class RepoPage extends Component {
 
 const mapStateToProps = (state, ownProps) => {
   const { username, reponame } = ownProps.params
-  const { entities: { users, repos } } = state
+  const {
+    entities: { users, repos },
+    pagination: { contributorsByRepo },
+  } = state
+
   const fullName = `${username}/${reponame}`
+  const contributorsPagination = contributorsByRepo[fullName] || { ids: [] }
+  const contributors = contributorsPagination.ids.map(id => users[id])
 
   return {
     fullName,
+    contributors,
     repo: repos[fullName.toLowerCase()],
     owner: users[username.toLowerCase()],
   }
@@ -58,4 +97,5 @@ const mapStateToProps = (state, ownProps) => {
 
 export default connect(mapStateToProps, {
   loadRepo,
+  loadContributors,
 })(RepoPage)

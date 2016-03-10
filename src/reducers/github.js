@@ -19,4 +19,12 @@ export const pagination = combineReducers({
       ActionTypes.USER_REPOS_FAILURE,
     ],
   }),
+  contributorsByRepo: paginate({
+    getIdAttribute: action => action.fullName,
+    types: [
+      ActionTypes.CONTRIBUTORS_REQUEST,
+      ActionTypes.CONTRIBUTORS_SUCCESS,
+      ActionTypes.CONTRIBUTORS_FAILURE,
+    ],
+  }),
 })

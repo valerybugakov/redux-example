@@ -1,5 +1,4 @@
 import React, { PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import { browserHistory } from 'react-router'
 
@@ -31,7 +30,7 @@ const App = ({ children }) => (
 )
 
 App.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 }
 
-export default connect()(App)
+export default App

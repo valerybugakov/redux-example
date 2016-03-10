@@ -1,9 +1,17 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import autobind from 'autobind-decorator'
 
 class Explore extends Component {
   static propTypes = {
+    handleChange: PropTypes.func,
+    value: PropTypes.string,
+  }
+
+  @autobind
+  onKeyUp(e) {
+    if (e.keyCode === 13) {
+      this.handleGoClick()
+    }
   }
 
   getInputValue() {
@@ -13,13 +21,6 @@ class Explore extends Component {
   @autobind
   handleGoClick() {
     this.props.handleChange(this.getInputValue())
-  }
-
-  @autobind
-  onKeyUp(e) {
-    if (e.keyCode === 13) {
-      this.handleGoClick()
-    }
   }
 
   render() {
@@ -38,7 +39,6 @@ class Explore extends Component {
       </div>
     )
   }
-
 }
 
-export default connect()(Explore)
+export default Explore

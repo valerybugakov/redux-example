@@ -8,13 +8,13 @@ const list = (reducer) => {
       case ADD_TO_LIST:
         return [
           ...state,
-          reducer(undefined, action)
+          reducer(undefined, action),
         ]
       case REMOVE_FROM_LIST:
         if (typeof index === 'number') {
           return [
             ...state.slice(0, index),
-            ...state.slice(index + 1)
+            ...state.slice(index + 1),
           ]
         }
         return state.slice(0, state.length - 1)
@@ -23,7 +23,7 @@ const list = (reducer) => {
           return [
             ...state.slice(0, index),
             reducer(state[index], action),
-            ...state.slice(index + 1)
+            ...state.slice(index + 1),
           ]
         }
         return state

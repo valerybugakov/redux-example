@@ -43,7 +43,7 @@ function fetchRepos(username, nextPageUrl) {
 export function loadRepos(username, nextPage) {
   return (dispatch, getState) => {
     const {
-      nextPageUrl = `users/${username}/repos`,
+      nextPageUrl = `users/${username}/repos?sort=created`,
       pageCount = 0,
     } = getState().pagination.reposByUser[username] || {}
 
@@ -61,7 +61,6 @@ export const REPO_FAILURE = 'REPO_FAILURE'
 
 function fetchRepo(fullName) {
   return {
-    fullName,
     [CALL_API_SYMBOL]: {
       types: [REPO_REQUEST, REPO_SUCCESS, REPO_FAILURE],
       endpoint: `repos/${fullName}`,
@@ -77,5 +76,35 @@ export function loadRepo(fullName, requiredFields = []) {
       return null
     }
     dispatch(fetchRepo(fullName))
+  }
+}
+
+export const CONTRIBUTORS_REQUEST = 'CONTRIBUTORS_REQUEST'
+export const CONTRIBUTORS_SUCCESS = 'CONTRIBUTORS_SUCCESS'
+export const CONTRIBUTORS_FAILURE = 'CONTRIBUTORS_FAILURE'
+
+function fetchContributors(fullName, nextPageUrl) {
+  return {
+    fullName,
+    [CALL_API_SYMBOL]: {
+      types: [CONTRIBUTORS_REQUEST, CONTRIBUTORS_SUCCESS, CONTRIBUTORS_FAILURE],
+      endpoint: nextPageUrl,
+      schema: Schemas.USER_ARRAY,
+    },
+  }
+}
+
+export function loadContributors(fullName, nextPage) {
+  return (dispatch, getState) => {
+    const {
+      nextPageUrl = `repos/${fullName}/contributors`,
+      pageCount = 0,
+    } = getState().pagination.contributorsByRepo[fullName] || {}
+
+    if (pageCount > 0 && !nextPage) {
+      return null
+    }
+
+    dispatch(fetchContributors(fullName, nextPageUrl))
   }
 }

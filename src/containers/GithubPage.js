@@ -1,12 +1,11 @@
 import React, { Component, PropTypes } from 'react'
-import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import Explore from 'components/Explore'
 
 class GithubPage extends Component {
   static propTypes = {
     inputValue: PropTypes.string,
-    children: PropTypes.node
+    children: PropTypes.node,
   }
 
   handleChange(user) {
@@ -24,11 +23,8 @@ class GithubPage extends Component {
         />
         {children}
       </div>
-
     )
   }
 }
 
-export default connect(null, {
-
-})(GithubPage)
+export default GithubPage

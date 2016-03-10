@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import autobind from 'autobind-decorator'
 import { loadUser, loadRepos } from 'actions/github'
 
 class GitUserPage extends Component {
@@ -26,6 +27,11 @@ class GitUserPage extends Component {
     const { username } = props
     this.props.loadUser(username, ['followers', 'following'])
     this.props.loadRepos(username)
+  }
+
+  @autobind
+  handleLoadMore() {
+    this.props.loadRepos(this.props.username, true)
   }
 
   renderRepos(repos) {
@@ -63,6 +69,10 @@ class GitUserPage extends Component {
         <div>
           List of repos:
           {this.renderRepos(userRepos)}
+          {
+            user.publicRepos > userRepos.length &&
+            <button onClick={this.handleLoadMore}>Load more</button>
+          }
         </div>
       </div>
     )

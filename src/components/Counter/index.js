@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { onIncrement, onDecrement } from 'actions/counter'
 import styles from './counter.css'
 
-const Counter = ({ index, value, onIncrementClick, onDecrementClick }) => (
+const Counter = ({ value, onIncrementClick, onDecrementClick }) => (
   <div className={styles.container}>
   <h1 className={styles.value}>{value}</h1>
   <button className={styles.button} onClick={onIncrementClick}>+</button>
